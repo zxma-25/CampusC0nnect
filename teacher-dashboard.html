@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - CampusConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap&libraries=places"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+   <style>
+      #map {
+      margin: auto;
+      width: 50%;
+      border: 2px solid rgb(13, 104, 207);
+      border-radius: 10px;
+      padding: 10px;
+      height: 300px;
+      padding-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <header class="header">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>CampusConnect</span>
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="teacher-dashboard.html" class="nav-link active">Dashboard</a></li>
+                    <li><a href="teacher-clasess.html" class="nav-link">My Classes</a></li>
+                    <li><a href="teacher-grades.html" class="nav-link">Grades</a></li>
+                    <li><a href="teacher-assignments.html" class="nav-link">Assignments</a></li>
+                    <li><a href="teacher-schedule" class="nav-link">Schedule</a></li>
+                    <li><a href="teacher-profile" class="nav-link">Profile</a></li>
+                    <li><a href="teacher-settings" class="nav-link">Settings</a></li>
+                </ul>
+            </nav>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <section class="welcome-section">
+            <h1 class="welcome-title" id="welcome-title">Teacher Dashboard</h1>
+            <p class="welcome-subtitle">Manage your classes and track student progress</p>
+        </section>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon" style="background: var(--primary-color);">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                </div>
+                <div class="stat-value">4</div>
+                <div class="stat-label">Active Classes</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon" style="background: var(--secondary-color);">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+                <div class="stat-value">127</div>
+                <div class="stat-label">Total Students</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon" style="background: var(--warning-color);">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                </div>
+                <div class="stat-value">18</div>
+                <div class="stat-label">Assignments to Grade</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon" style="background: var(--info-color);">
+                        <i class="fas fa-calendar-week"></i>
+                    </div>
+                </div>
+                <div class="stat-value">12</div>
+                <div class="stat-label">Classes This Week</div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="main-panel">
+                <h3 style="margin-bottom: 1.5rem; color: var(--text-color);">
+                    <i class="fas fa-chalkboard"></i> My Classes
+                </h3>
+                
+                <div class="class-card">
+                    <div class="class-header">
+                        <div>
+                            <div class="class-name">Advanced Mathematics</div>
+                            <div class="class-code">MATH 301</div>
+                        </div>
+                        <div class="student-count">
+                            <i class="fas fa-users"></i>
+                            <span>32 students</span>
+                        </div>
+                    </div>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">MWF 9:00-10:00 • Room 201</p>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button class="btn btn-primary" onclick="showToast('Opening class management...', 'success')">
+                            Manage Class
+                        </button>
+                        <button class="btn btn-secondary" onclick="showToast('Opening gradebook...', 'success')">
+                            Grade Book
+                        </button>
+                    </div>
+                </div>
+
+                <div class="class-card">
+                    <div class="class-header">
+                        <div>
+                            <div class="class-name">Calculus I</div>
+                            <div class="class-code">MATH 151</div>
+                        </div>
+                        <div class="student-count">
+                            <i class="fas fa-users"></i>
+                            <span>28 students</span>
+                        </div>
+                    </div>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">TTh 2:00-3:30 • Room 105</p>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button class="btn btn-primary" onclick="showToast('Opening class management...', 'success')">
+                            Manage Class
+                        </button>
+                        <button class="btn btn-secondary" onclick="showToast('Opening gradebook...', 'success')">
+                            Grade Book
+                        </button>
+                    </div>
+                </div>
+
+                <div class="class-card">
+                    <div class="class-header">
+                        <div>
+                            <div class="class-name">Statistics</div>
+                            <div class="class-code">STAT 200</div>
+                        </div>
+                        <div class="student-count">
+                            <i class="fas fa-users"></i>
+                            <span>35 students</span>
+                        </div>
+                    </div>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">MWF 11:00-12:00 • Room 210</p>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button class="btn btn-primary" onclick="showToast('Opening class management...', 'success')">
+                            Manage Class
+                        </button>
+                        <button class="btn btn-secondary" onclick="showToast('Opening gradebook...', 'success')">
+                            Grade Book
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-panel">
+                <div style="background: var(--surface-color); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--shadow); border: 1px solid var(--border-color);">
+                    <h3 style="margin-bottom: 1rem;"><i class="fas fa-tasks"></i> Today's Tasks</h3>
+                    
+                    <div class="task-item">
+                        <div class="task-icon" style="background: var(--danger-color);">
+                            <i class="fas fa-exclamation"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600;">Grade Midterm Exams</div>
+                            <div style="font-size: 0.875rem; color: var(--text-muted);">MATH 301 • Due Today</div>
+                        </div>
+                    </div>
+
+                    <div class="task-item">
+                        <div class="task-icon" style="background: var(--warning-color);">
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600;">Prepare Lecture Notes</div>
+                            <div style="font-size: 0.875rem; color: var(--text-muted);">STAT 200 • Tomorrow</div>
+                        </div>
+                    </div>
+
+                    <div class="task-item">
+                        <div class="task-icon" style="background: var(--info-color);">
+                            <i class="fas fa-comment"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600;">Reply to Student Emails</div>
+                            <div style="font-size: 0.875rem; color: var(--text-muted);">5 pending messages</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: var(--surface-color); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--shadow); border: 1px solid var(--border-color);">
+                    <h3 style="margin-bottom: 1rem;"><i class="fas fa-bolt"></i> Quick Actions</h3>
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <button class="btn btn-primary" onclick="showToast('Creating new assignment...', 'success')">
+                            <i class="fas fa-plus"></i> Create Assignment
+                        </button>
+                        <button class="btn btn-secondary" onclick="showToast('Opening grade center...', 'success')">
+                            <i class="fas fa-chart-bar"></i> Grade Center
+                        </button>
+                        <button class="btn btn-warning" onclick="showToast('Scheduling office hours...', 'success')">
+                            <i class="fas fa-clock"></i> Office Hours
+                        </button>
+                    </div>
+                </div>
+
+                <div style="background: var(--surface-color); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--shadow); border: 1px solid var(--border-color);">
+                    <h3 style="margin-bottom: 1rem;"><i class="fas fa-chart-line"></i> Recent Activity</h3>
+                    
+                    <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);">
+                        <div style="width: 2rem; height: 2rem; border-radius: 50%; background: var(--secondary-color); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.875rem;">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; font-size: 0.875rem;">Assignment graded</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">MATH 301 • 2 hours ago</div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);">
+                        <div style="width: 2rem; height: 2rem; border-radius: 50%; background: var(--info-color); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.875rem;">
+                            <i class="fas fa-upload"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; font-size: 0.875rem;">New content uploaded</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">STAT 200 • 4 hours ago</div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem 0;">
+                        <div style="width: 2rem; height: 2rem; border-radius: 50%; background: var(--warning-color); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.875rem;">
+                            <i class="fas fa-comment"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; font-size: 0.875rem;">Student question answered</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">MATH 151 • Yesterday</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: var(--surface-color); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--shadow); border: 1px solid var(--border-color);">
+                    <h3 style="margin-bottom: 1rem;"><i class="fas fa-map-marker-alt"></i> Classroom Locations</h3>
+                    <div id="teacher-map" class="campus-map"></div>
+                    <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                        <button class="btn btn-info btn-small" onclick="showClassroomLocation('Room 201')">
+                            <i class="fas fa-chalkboard"></i> Room 201 (MATH 301)
+                        </button>
+                        <button class="btn btn-info btn-small" onclick="showClassroomLocation('Room 105')">
+                            <i class="fas fa-chalkboard"></i> Room 105 (MATH 151)
+                        </button>
+                        <button class="btn btn-info btn-small" onclick="showClassroomLocation('Room 210')">
+                            <i class="fas fa-chalkboard"></i> Room 210 (STAT 200)
+                        </button>
+                        <button class="btn btn-secondary btn-small" onclick="getDirectionsToOffice()">
+                            <i class="fas fa-route"></i> Directions to Office
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     <!-- 🌍 Campus Map Section -->
+    <section class="campus-map-section" style="margin-top: 3rem;">
+      <h3><i class="fas fa-map-marker-alt"></i> Campus Map</h3>
+      <div id="map"></div>
+    </section>
+  </div>
+
+    <button id="logout-btn" class="logout-btn" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+
+    <div id="toast" class="toast"></div>
+    <!-- Leaflet Map Initialization -->
+  <script>
+    var map = L.map('map').setView([51.505, -0.09], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    L.marker([51.505, -0.09]).addTo(map)
+      .bindPopup('Main Campus')
+      .openPopup();
+  </script>
+
+    <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Settings - CampusConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <header class="header">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>CampusConnect</span>
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="admin-dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="admin-users.html" class="nav-link">Employees</a></li>
+                    <li><a href="admin-courses.html" class="nav-link">Meetings</a></li>
+                    <li><a href="admin-reports.html" class="nav-link">Reports</a></li>
+                    <li><a href="admin-settings.html" class="nav-link active">Settings</a></li>
+                </ul>
+            </nav>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+    <div class="main-container">
+        <section class="welcome-section">
+            <h1 class="welcome-title">Settings</h1>
+            <p class="welcome-subtitle">Manage system and HR settings.</p>
+        </section>
+        <div class="dashboard-grid">
+            <div class="main-panel">
+                <h3><i class="fas fa-cogs"></i> Settings</h3>
+                <form id="admin-settings-form" style="margin-bottom:1.5rem;">
+                    <div class="form-group">
+                        <label for="admin-email" class="form-label">Admin Contact Email</label>
+                        <input type="email" id="admin-email" class="form-input" value="admin@campus.edu" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-small"><i class="fas fa-save"></i> Save Email</button>
+                </form>
+                <div style="margin-bottom:1.5rem;">
+                    <label style="font-weight:500;">Theme:</label>
+                    <button class="btn btn-secondary btn-small" id="toggle-theme-btn" type="button"><i class="fas fa-adjust"></i> Toggle Dark Mode</button>
+                </div>
+                <div class="settings-placeholder" style="margin-top:2rem; color:var(--text-muted);">Settings management functionality coming soon.</div>
+            </div>
+        </div>
+    </div>
+    <button id="logout-btn" class="logout-btn" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+    <div id="toast" class="toast"></div>
+    <script src="main.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('admin-settings-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        showToast('Admin email updated (demo only, not saved)', 'success');
+    });
+    document.getElementById('toggle-theme-btn').addEventListener('click', function() {
+        toggleTheme();
+    });
+});
+</script>
+</body>
+</html>

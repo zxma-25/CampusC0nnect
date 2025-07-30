@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Reports - CampusConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <header class="header">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>CampusConnect</span>
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="admin-dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="admin-users.html" class="nav-link">Users</a></li>
+                    <li><a href="admin-courses.html" class="nav-link">Courses</a></li>
+                    <li><a href="admin-reports.html" class="nav-link active">Reports</a></li>
+                    <li><a href="admin-settings.html" class="nav-link">Settings</a></li>
+                </ul>
+            </nav>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+    <div class="main-container">
+        <section class="welcome-section">
+            <h1 class="welcome-title">Reports</h1>
+            <p class="welcome-subtitle">Generate and view system reports.</p>
+        </section>
+        <div class="dashboard-grid">
+            <div class="main-panel">
+                <h3><i class="fas fa-file-alt"></i> Reports</h3>
+                <div id="report-summary" style="margin-bottom:2rem;"></div>
+                <button class="btn btn-primary btn-small" id="download-csv"><i class="fas fa-download"></i> Download Users CSV</button>
+            </div>
+        </div>
+    </div>
+    <button id="logout-btn" class="logout-btn" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+    <div id="toast" class="toast"></div>
+    <script src="main.js"></script>
+    <script>
+function getRole(email) {
+    if (email.includes('@campus.admin')) return 'admin';
+    if (email.includes('@campus.edu')) return 'teacher';
+    if (email.includes('@campus.stu')) return 'student';
+    return 'unknown';
+}
+
+// Dummy static user list (same as users panel)
+const users = [
+    { email: 'zama@campus.admin', password: 'admin123' },
+    { email: 'admin@campus.admin', password: 'admin123' },
+    { email: 'student1@campus.stu', password: 'password123' },
+    { email: 'student2@campus.stu', password: 'mypassword' },
+    { email: 'teacher@campus.edu', password: 'teachpass' },
+    { email: 'lesedi mahlangu@campus.stu', password: 'lesedi2024' },
+    { email: 'Zama@campus.stu', password: 'zama1234' },
+    { email: 'Ofentse@campus.stu', password: 'fen2025' },
+    { email: 'teacherjoseph@campus.edu', password: 'joseph123' }
+];
+
+function generateReport(users) {
+    const total = users.length;
+    const admins = users.filter(u => getRole(u.email) === 'admin').length;
+    const teachers = users.filter(u => getRole(u.email) === 'teacher').length;
+    const students = users.filter(u => getRole(u.email) === 'student').length;
+    return `
+        <div style="margin-bottom:1rem;font-weight:500;">User Summary</div>
+        <ul style="margin-bottom:1rem;">
+            <li>Total users: <b>${total}</b></li>
+            <li>Admins: <b>${admins}</b></li>
+            <li>Teachers: <b>${teachers}</b></li>
+            <li>Students: <b>${students}</b></li>
+        </ul>
+    `;
+}
+
+function usersToCSV(users) {
+    let csv = 'Email,Role\n';
+    users.forEach(u => {
+        csv += `${u.email},${getRole(u.email)}\n`;
+    });
+    return csv;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('report-summary').innerHTML = generateReport(users);
+    document.getElementById('download-csv').addEventListener('click', function() {
+        const csv = usersToCSV(users);
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'users-report.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    });
+});
+</script>
+</body>
+</html>
