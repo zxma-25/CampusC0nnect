@@ -1,0 +1,1 @@
+console.log('CampusConnect loaded successfully');
